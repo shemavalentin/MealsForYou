@@ -1,0 +1,8 @@
+{
+    // Telling the eslint, Hey you are going to use the following react native configurations
+
+    "extends": "@react-native-community",
+    "rules": {
+        "quotes": [2, "couble", { "avoidEscape": true}]
+    }
+}
