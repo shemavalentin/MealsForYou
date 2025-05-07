@@ -908,6 +908,16 @@
     "@eslint/core" "^0.13.0"
     levn "^0.4.1"
 
+"@expo-google-fonts/lato@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/lato/-/lato-0.3.0.tgz#a9d41d7484b908965170bc0c741e7b456d8412b3"
+  integrity sha512-+hzzzPK9rbTwbLhkd/cViO5x5l4Zf+HdzzvFcota1turEWmqfwBiTmf0PIEdNSUouJeenJxsERUKhbrjm938YQ==
+
+"@expo-google-fonts/oswald@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/oswald/-/oswald-0.3.0.tgz#fa8de08fb5e62b4df7e18604b66361fbb0b182cc"
+  integrity sha512-WzblQlVmh9Mv7CK92oUGofjcMHUdT1yyVX0C37cDcmol9Btwdvf2cI1mdkKM2rGuTxb85ZQQfkwkeVOCxFiR3w==
+
 "@expo/bunyan@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@expo/bunyan/-/bunyan-4.0.1.tgz#ab9e17e36c71c704a0ce72168378a487368da736"
