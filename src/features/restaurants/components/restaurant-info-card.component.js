@@ -4,6 +4,8 @@ import { Text, Image, View } from "react-native";
 import { Card } from "react-native-paper";
 import { SvgXml } from "react-native-svg";
 
+import { Spacer } from "../../../components/spacer/spacer.component";
+
 // Importing the asset that contains the svg properties
 import star from "../../../../assets/star";
 
@@ -26,7 +28,7 @@ const Address = styled(Text)`
 
 const Title = styled(Text)`
   font-family: ${(props) => props.theme.fonts.heading};
-  font-size: ${(props) => props.theme.fontSizes.caption};
+  font-size: ${(props) => props.theme.fontSizes.body};
   color: ${(props) => props.theme.colors.ui.primary};
 `;
 
@@ -77,10 +79,7 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
       <Info>
         <Title>{name}</Title>
         <Section>
-          {/*Wraping the rating in Rating component to be on row*/}
           <Rating>
-            {/* Iteratin over the rating number to display number of starts */}
-            {/* Adding xml property  and width and height*/}
             {ratingArray.map(() => (
               <SvgXml xml={star} width={20} height={20} />
             ))}
@@ -92,9 +91,12 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
               </Text>
             )}
 
-            <View style={{ paddingLeft: 16 }} />
-            {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
-            <Image style={{ width: 15, height: 15 }} source={{ uri: icon }} />
+            <Spacer position="left" size="large">
+              {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+            </Spacer>
+            <Spacer position="left" size="large">
+              <Image style={{ width: 15, height: 15 }} source={{ uri: icon }} />
+            </Spacer>
           </SectionEnd>
         </Section>
 
