@@ -18,6 +18,7 @@
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/bottom-tabs": "^7.3.12",
     "@react-navigation/native": "^7.1.8",
+    "camelize": "^1.0.1",
     "expo": "~52.0.46",
     "expo-font": "~13.0.4",
     "expo-status-bar": "~2.0.1",

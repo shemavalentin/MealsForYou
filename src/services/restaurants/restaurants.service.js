@@ -1,4 +1,6 @@
 import { mocks } from "./mock";
+import camelize from "camelize";
+
 // Making a request to get restaurants
 
 export const restaurantsRequest = (location = "37.7749295,-122.4194155") => {
@@ -12,9 +14,15 @@ export const restaurantsRequest = (location = "37.7749295,-122.4194155") => {
   });
 };
 
+const restaurantTransform = (result) => {
+  const newResult = camelize(result);
+  return newResult;
+};
+
 restaurantsRequest()
-  .then((result) => {
-    console.log(result);
+  .then(restaurantTransform)
+  .then((transformedResponse) => {
+    console.log(transformedResponse);
   })
   .catch((err) => {
     console.log(err);
