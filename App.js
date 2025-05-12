@@ -39,11 +39,7 @@ const Map = () => (
   </SafeArea>
 );
 
-const tabBarIcon = ({ size, color }) => (
-  <Ionicons name={"iconName"} size={size} color={color} />
-);
-
-const screenOptions = ({ route }) => {
+const createScreenOptions = ({ route }) => {
   const iconName = TAB_ICON[route.name];
 
   return {
@@ -77,7 +73,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <NavigationContainer>
           <Tab.Navigator
-            screenOptions={screenOptions}
+            screenOptions={createScreenOptions}
             tabBarOptions={{
               activeTintColor: "tomato",
               inactiveTintColor: "gray",
