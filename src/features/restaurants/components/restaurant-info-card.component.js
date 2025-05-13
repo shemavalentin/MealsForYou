@@ -35,7 +35,7 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
     address = "100 some random street",
     isOpenNow = true,
     rating = 4,
-    isClosedTemporarily,
+    isClosedTemporarily = true,
   } = restaurant;
 
   // Now we need to render the star 4 times or five as on the rating variable. we need to iterate over rating variable
@@ -55,7 +55,7 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
           </Rating>
           <SectionEnd>
             {isClosedTemporarily && (
-              <Text variant="error">CLOSED TEMPORALILY</Text>
+              <Text variant="error">CLOSED TEMPORARILY</Text>
             )}
 
             <Spacer position="left" size="large">

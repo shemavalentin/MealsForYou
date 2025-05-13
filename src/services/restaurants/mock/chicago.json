@@ -404,7 +404,7 @@
         "place_id": "some place id 28",
         "plus_code": {
           "compound_code": "",
-          "global_code": "",
+          "global_code": ""
         },
         "price_level": 3,
         "rating": 4.5,
