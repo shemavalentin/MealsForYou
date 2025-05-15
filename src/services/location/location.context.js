@@ -7,7 +7,7 @@ export const LocationContext = React.createContext();
 
 export const LocationContextProvider = ({ children }) => {
   //Defining states needed for the context
-  const [keyword, setKeyword] = useState("San francisco");
+  const [keyword, setKeyword] = useState(" ");
   const [location, setLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -29,12 +29,17 @@ export const LocationContextProvider = ({ children }) => {
       .then((result) => {
         setIsLoading(false);
         setLocation(result);
+        console.log(result);
       })
       .catch((err) => {
         setIsLoading(false);
         setError(err);
       });
   };
+
+  useEffect(() => {
+    onSearch(keyword);
+  }, []);
 
   // It will return the created context with Provider and the wraps the children
   // and ultimetly allow us to interact with the location service.

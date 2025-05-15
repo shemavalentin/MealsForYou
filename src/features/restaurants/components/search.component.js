@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Searchbar } from "react-native-paper";
 import { LocationContext } from "../../../services/location/location.context";
@@ -11,6 +11,13 @@ export const Search = () => {
   // Now use the context in LocationContext
   const { keyword, search } = useContext(LocationContext);
   const [searchKeyword, setSearchKeyword] = useState(keyword);
+
+  // Now use the useEffect hook for us to trigger the search as the searchbar mounts
+
+  useEffect(() => {
+    // when the searchbar mounts, do:
+    search(searchKeyword);
+  }, []);
 
   return (
     <SearchContainer>
