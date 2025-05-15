@@ -18,13 +18,17 @@ export const LocationContextProvider = ({ children }) => {
 
     // Making sure we set the keyword of that search key word
     setKeyword(SearchKeyword);
-    if (!SearchKeyword.length) {
+  };
+
+  // Setting the context determines when it is going to fire the request.
+  useEffect(() => {
+    if (!keyword.length) {
       // Don't do anything
       return;
     }
 
     // then trigger the locationRequest
-    locationRequest(SearchKeyword.toLocaleLowerCase())
+    locationRequest(keyword.toLocaleLowerCase())
       .then(locationTransform)
       .then((result) => {
         setIsLoading(false);
@@ -35,11 +39,7 @@ export const LocationContextProvider = ({ children }) => {
         setIsLoading(false);
         setError(err);
       });
-  };
-
-  useEffect(() => {
-    onSearch(keyword);
-  }, []);
+  }, [keyword]);
 
   // It will return the created context with Provider and the wraps the children
   // and ultimetly allow us to interact with the location service.

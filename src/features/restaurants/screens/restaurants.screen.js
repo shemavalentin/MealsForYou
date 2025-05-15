@@ -31,7 +31,7 @@ const LoadingContainer = styled.View`
 
 export const RestaurantsScreen = () => {
   // using the context in the restaurant context
-  const { isLoading, error, restaurants } = useContext(RestaurantsContext);
+  const { isLoading, restaurants } = useContext(RestaurantsContext);
   return (
     <SafeArea>
       {/* rendering the activity indicator(loading) */}
