@@ -37,7 +37,7 @@ export const RestaurantsContextProvider = ({ children }) => {
         });
     }, 2000);
   };
-  // Now when this component mount(RestaurantsContextProvider), we need to something
+  // Now when this component mount(RestaurantsContextProvider), we need to do something
   useEffect(
     () => {
       retrieveRestaurants();

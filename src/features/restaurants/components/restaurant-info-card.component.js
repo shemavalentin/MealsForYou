@@ -40,7 +40,6 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
 
   // Now we need to render the star 4 times or five as on the rating variable. we need to iterate over rating variable
   const ratingArray = Array.from(new Array(Math.floor(rating)));
-  console.log(ratingArray);
 
   return (
     <RestaurantCard elevation={5}>

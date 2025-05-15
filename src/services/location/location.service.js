@@ -1,7 +1,7 @@
 import camelize from "camelize";
 import { locations } from "./location.mock";
 
-export const locationRequest = () => {
+export const locationRequest = (searchTerm) => {
   // Let's return a promise to allow to mimc as if we are calling an API
   return new Promise((resolve, reject) => {
     const locationMock = locations[searchTerm];
@@ -17,7 +17,7 @@ export const locationTransform = (result) => {
   // const location = result.results[0];
 
   // Formating the results which may be not well formatted
-  const formattedResponse = camelize(result.results);
+  const formattedResponse = camelize(result);
 
   // we want to get geometry off of location, let's use destructuring
   const { geometry = {} } = formattedResponse.results[0];
