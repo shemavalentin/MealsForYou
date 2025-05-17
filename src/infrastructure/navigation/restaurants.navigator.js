@@ -9,15 +9,30 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { RestaurantsScreen } from "../../features/restaurants/screens/restaurants.screen";
 
+import { Text } from "react-native-paper";
+
 const RestaurantStack = createStackNavigator();
 
 export const RestaurantsNavigator = () => {
   return (
+    // here I'm allowing the restaurant tab to render multiple screens
+
+    // First screen
     <RestaurantStack.Navigator screenOptions={{ headerShown: false }}>
       {/* The RestaurantStack.Screen will need to consume the RestaurantScreen */}
       <RestaurantStack.Screen
         name="Restaurants"
         component={RestaurantsScreen}
+        // options={{ headerShown: false }}
+      />
+
+      {/* second screen */}
+      {/* The RestaurantStack.Screen will need to consume the RestaurantScreen */}
+      <RestaurantStack.Screen
+        name="RestaurantDetail"
+        component={() => {
+          <Text> Restaurant Detail</Text>;
+        }}
         // options={{ headerShown: false }}
       />
     </RestaurantStack.Navigator>
