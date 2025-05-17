@@ -14,7 +14,7 @@ import { Platform } from "react-native";
 
 import { RestaurantsScreen } from "../../features/restaurants/screens/restaurants.screen";
 
-import { Text } from "react-native-paper";
+import { RestaurantDetailScreen } from "../../features/restaurants/screens/restaurant-detail.screen";
 
 const RestaurantStack = createStackNavigator();
 
@@ -42,7 +42,7 @@ export const RestaurantsNavigator = () => {
       The RestaurantStack.Screen will need to consume the RestaurantScreen */}
       <RestaurantStack.Screen
         name="RestaurantDetail"
-        component={() => <Text> Restaurant Detail</Text>}
+        component={RestaurantDetailScreen}
         // options={{ headerShown: false }}
       />
     </RestaurantStack.Navigator>
