@@ -776,7 +776,7 @@
     pirates "^4.0.6"
     source-map-support "^0.5.16"
 
-"@babel/runtime@^7.20.0", "@babel/runtime@^7.25.0":
+"@babel/runtime@^7.20.0", "@babel/runtime@^7.25.0", "@babel/runtime@^7.27.1":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.1.tgz#9fce313d12c9a77507f264de74626e87fd0dc541"
   integrity sha512-1x3D2xEk2fRo3PAhwQwu5UubzgiVWSXTBfWpVd2Mx2AzRqJuDJCsgaDVZ7HB5iGzDW1Hl1sWN2mFyKjmR9uAog==
@@ -1850,6 +1850,13 @@
   dependencies:
     color "^4.2.3"
 
+"@react-navigation/elements@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.4.2.tgz#22680bcbec8d59f1aad35934beba83f9e251ed8f"
+  integrity sha512-cudKLsRtOB+i8iDzfBKypdqiHsDy1ruqCfYAtwKEclDmLsxu3/90YXoBtoPyFNyIpsn3GtsJzZsrYWQh78xSWg==
+  dependencies:
+    color "^4.2.3"
+
 "@react-navigation/native@^7.1.8":
   version "7.1.8"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.1.8.tgz#402b3da515795e886f5a719426624d7c72d6a413"
@@ -1867,6 +1874,14 @@
   integrity sha512-5ffgrefOs2zWqcCVX+OKn+RDx0puopQtxqetegFrTfWQ6pGXdY/5v4kBpPwaOFrNEeE/LPbHt9IJaJuvyhB7RA==
   dependencies:
     nanoid "^3.3.11"
+
+"@react-navigation/stack@^7.3.2":
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-7.3.2.tgz#25c5befad3d9fe339b3cb7a3c383e2241a482561"
+  integrity sha512-DAkuLCguUFjeOTmNtklMZSQJPcG3sl5h5M7VVms4xdGHO6RtNJ3ntJGTXYK/yFcDedLURKqBlJl5+4yTLORitQ==
+  dependencies:
+    "@react-navigation/elements" "^2.4.2"
+    color "^4.2.3"
 
 "@segment/loosely-validate-event@^2.0.0":
   version "2.0.0"
