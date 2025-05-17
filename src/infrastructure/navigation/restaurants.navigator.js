@@ -5,7 +5,12 @@ all the navigation that can occur within the restaurant tab
 import React from "react";
 
 // createStackNavigator allow screen lay on the top of each other they are as on the stack
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
+
+import { Platform } from "react-native";
 
 import { RestaurantsScreen } from "../../features/restaurants/screens/restaurants.screen";
 
@@ -18,7 +23,14 @@ export const RestaurantsNavigator = () => {
     // here I'm allowing the restaurant tab to render multiple screens
 
     // First screen
-    <RestaurantStack.Navigator screenOptions={{ headerShown: false }}>
+    <RestaurantStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        ...(Platform.OS === "ios"
+          ? TransitionPresets.ModalPresentationIOS
+          : TransitionPresets.ModalSlideFromBottomIOS),
+      }}
+    >
       {/* The RestaurantStack.Screen will need to consume the RestaurantScreen */}
       <RestaurantStack.Screen
         name="Restaurants"
@@ -26,13 +38,11 @@ export const RestaurantsNavigator = () => {
         // options={{ headerShown: false }}
       />
 
-      {/* second screen */}
-      {/* The RestaurantStack.Screen will need to consume the RestaurantScreen */}
+      {/* second screen, 
+      The RestaurantStack.Screen will need to consume the RestaurantScreen */}
       <RestaurantStack.Screen
         name="RestaurantDetail"
-        component={() => {
-          <Text> Restaurant Detail</Text>;
-        }}
+        component={() => <Text> Restaurant Detail</Text>}
         // options={{ headerShown: false }}
       />
     </RestaurantStack.Navigator>
