@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import styled from "styled-components";
 import { Search } from "../components/search.component";
 import { LocationContext } from "../../../services/location/location.context";
@@ -68,7 +68,16 @@ export const MapScreen = () => {
         {/* Now let's map over the restaurants to get the individual restaurant */}
         {restaurants.map((restaurant) => {
           // now return markers on the map
-          return null;
+          return (
+            <Marker
+              key={restaurant.name}
+              title={restaurant.name}
+              coordinate={{
+                latitude: restaurant.geometry.location.lat,
+                longitude: restaurant.geometry.location.lng,
+              }}
+            />
+          );
         })}
       </Map>
     </>
