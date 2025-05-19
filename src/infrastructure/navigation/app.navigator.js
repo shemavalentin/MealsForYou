@@ -46,7 +46,11 @@ export const AppNavigator = () => (
         component={RestaurantsNavigator}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Map" component={MapScreen} />
+      <Tab.Screen
+        name="Map"
+        component={MapScreen}
+        options={{ headerShown: false }}
+      />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   </NavigationContainer>

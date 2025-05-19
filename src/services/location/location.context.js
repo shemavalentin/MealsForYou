@@ -22,7 +22,8 @@ export const LocationContextProvider = ({ children }) => {
 
   // Setting the context determines when it is going to fire the request.
   useEffect(() => {
-    if (!keyword.length) {
+    if (!keyword.trim().length) {
+      onSearch("toronto");
       // Don't do anything
       return;
     }

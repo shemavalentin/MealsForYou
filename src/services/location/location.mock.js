@@ -3,12 +3,12 @@ export const locations = {
     results: [
       {
         geometry: {
-          locations: {
+          location: {
             lng: 4.402464,
             lat: 51.219448,
           },
           viewport: {
-            mortheast: {
+            northeast: {
               lat: 51.2145994302915,
               lng: 4.418074130291502,
             },
@@ -25,10 +25,10 @@ export const locations = {
   "san francisco": {
     results: [
       {
-        geomety: {
+        geometry: {
           location: {
-            lat: 37.7749295,
             lng: -122.4194155,
+            lat: 37.7749295,
           },
 
           viewport: {
@@ -78,7 +78,14 @@ export const locations = {
         },
 
         viewport: {
-          northeast: {},
+          northeast: {
+            lat: 43.6535,
+            lng: -79.383,
+          },
+          southwest: {
+            lat: 43.651,
+            lng: -79.3855,
+          },
         },
       },
     ],
