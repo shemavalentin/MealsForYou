@@ -33,7 +33,7 @@ export const RestaurantDetailScreen = ({ route }) => {
         <List.Accordion
           title="Lunch"
           left={(props) => <List.Icon {...props} icon="hamburger" />}
-          expanded={breakfastExpanded} // When breakfastExpanded is false
+          expanded={lunchExpanded} // When breakfastExpanded is false
           // When the breakfastExpanded is true, now set it back to false when pressed
           onPress={() => setLunchExpanded(!lunchExpanded)}
         >
@@ -46,7 +46,7 @@ export const RestaurantDetailScreen = ({ route }) => {
         <List.Accordion
           title="Dinner"
           left={(props) => <List.Icon {...props} icon="food-variant" />}
-          expanded={breakfastExpanded} // When breakfastExpanded is false
+          expanded={dinnerExpanded} // When breakfastExpanded is false
           // When the breakfastExpanded is true, now set it back to false when pressed
           onPress={() => setDinnerExpanded(!dinnerExpanded)}
         >
@@ -59,7 +59,7 @@ export const RestaurantDetailScreen = ({ route }) => {
         <List.Accordion
           title="Drinks"
           left={(props) => <List.Icon {...props} icon="cup" />}
-          expanded={breakfastExpanded} // When breakfastExpanded is false
+          expanded={drinksExpanded} // When breakfastExpanded is false
           // When the breakfastExpanded is true, now set it back to false when pressed
           onPress={() => setDrinksExpanded(!drinksExpanded)}
         >
