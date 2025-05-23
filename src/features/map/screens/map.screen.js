@@ -34,9 +34,31 @@ const Map = styled(MapView)`
 const PopupContainer = styled(Animated.View)`
   position: absolute;
   z-index: 999;
+  overflow: visible;
+  align-items: center;
 `;
 
-export const MapScreen = () => {
+const styles = {
+  arrowContainer: {
+    marginTop: 0,
+    height: 0,
+    width: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  arrow: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderTopWidth: 10,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderTopColor: "orange", // match popup background
+  },
+};
+
+export const MapScreen = ({ navigation }) => {
   const { location } = useContext(LocationContext);
   const { restaurants = [], isLoading } = useContext(RestaurantsContext);
 
@@ -177,7 +199,6 @@ export const MapScreen = () => {
             left: popupInitialPosition.x,
             top: popupInitialPosition.y,
             width: PopupWidth,
-            height: PopupHeight,
             opacity,
             transform: [
               ...pan.getTranslateTransform(),
@@ -186,19 +207,46 @@ export const MapScreen = () => {
           }}
           {...panResponder.panHandlers}
         >
-          <Pressable onPress={clearPopup}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Restaurants", {
+                screen: "RestaurantDetail",
+                params: {
+                  restaurant: selectedRestaurant,
+                },
+              })
+            }
+            style={{
+              backgroundColor: "white",
+              borderRadius: 8,
+              padding: 8,
+              width: "100%",
+            }}
+          >
             <CompactRestaurantInfo restaurant={selectedRestaurant} />
-            <Text
-              style={{
-                textAlign: "center",
-                marginTop: 5,
-                color: "blue",
-                fontSize: 12,
+
+            <Pressable
+              onPress={(e) => {
+                e.stopPropagation(); // prevent bubbling up to parent Pressable
+                clearPopup();
               }}
             >
-              Close
-            </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: 5,
+                  color: "blue",
+                  fontSize: 12,
+                }}
+              >
+                Close
+              </Text>
+            </Pressable>
           </Pressable>
+
+          <View style={styles.arrowContainer}>
+            <View style={styles.arrow} />
+          </View>
         </PopupContainer>
       )}
     </>
