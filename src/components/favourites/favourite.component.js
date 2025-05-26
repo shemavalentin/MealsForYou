@@ -4,23 +4,37 @@ import styled from "styled-components";
 // Importing AntDesigning to help adding a heart icon
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-
-const FavouriteButton = styled(TouchableOpacity)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 9;
-`;
-
 // Then importing the FavouritesContext for favourites to be captured
 import { FavouritesContext } from "../../services/favourites/favourites.context";
 
-export const Favourite = () => {
-  const { Favourites, addToFavourites, removeFromFavourites } =
+const FavouriteButton = styled(TouchableOpacity)`
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  z-index: 9;
+`;
+
+export const Favourite = ({ restaurant }) => {
+  const { favourites, addToFavourites, removeFromFavourites } =
     useContext(FavouritesContext);
+
+  console.log(favourites.length);
+
+  // Now determining the favourite
+  const isFavourite = favourites.find((r) => r.placeId === restaurant.placeId);
   return (
-    <FavouriteButton>
-      <AntDesign name="heart" size={24} color="red" />
+    <FavouriteButton
+      onPress={() =>
+        !isFavourite
+          ? addToFavourites(restaurant)
+          : removeFromFavourites(restaurant)
+      }
+    >
+      <AntDesign
+        name={isFavourite ? "heart" : "hearto"}
+        size={24}
+        color={isFavourite ? "red" : "white"}
+      />
     </FavouriteButton>
   );
 };
