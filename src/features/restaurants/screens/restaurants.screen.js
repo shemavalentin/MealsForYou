@@ -10,6 +10,7 @@ import { FavouritesBar } from "../../../components/favourites/favourites-bar.com
 import { Search } from "../components/search.component";
 
 import { RestaurantsContext } from "../../../services/restaurants/restaurants.context";
+import { FavouritesContext } from "../../../services/favourites/favourites.context";
 
 import { ActivityIndicator } from "react-native-paper";
 
@@ -33,6 +34,7 @@ const LoadingContainer = styled.View`
 export const RestaurantsScreen = ({ navigation }) => {
   // using the context in the restaurant context
   const { isLoading, restaurants } = useContext(RestaurantsContext);
+  const { favourites } = useContext(FavouritesContext);
   const [isToggled, setIsToggled] = useState(false);
 
   console.log(navigation);
@@ -55,7 +57,12 @@ export const RestaurantsScreen = ({ navigation }) => {
       />
 
       {/* Setting up the Favourites bar */}
-      {isToggled && <FavouritesBar />}
+      {isToggled && (
+        <FavouritesBar
+          favourites={favourites}
+          onNavigate={navigation.navigate}
+        />
+      )}
       <RestaurantList
         // Giving the component properties(props)
         data={restaurants}
