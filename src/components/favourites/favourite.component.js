@@ -20,7 +20,7 @@ export const Favourite = ({ restaurant }) => {
 
   console.log(favourites.length);
 
-  // Now determining the favourite
+  // Now determining the favourite. But this logic could be a performance botleneck as we will have one item appearing many times in the array
   const isFavourite = favourites.find((r) => r.placeId === restaurant.placeId);
   return (
     <FavouriteButton
