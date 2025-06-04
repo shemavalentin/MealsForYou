@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "react-native-gesture-handler";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { ThemeProvider } from "styled-components/native";
 import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   useFonts as useOswald,
   Oswald_400Regular,
@@ -30,8 +31,24 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); // Correct way to get auth instance
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Then implement the useEffect
+  useEffect(() => {
+    setTimeout(() => {
+      signInWithEmailAndPassword(auth, "valentin@shema.io", "test123")
+        .then((u) => {
+          setIsAuthenticated(true);
+        })
+        .catch((e) => {
+          console.log("Sign-in error:", e);
+        });
+    }, 2000);
+  }, []);
+
   const [oswaldLoaded] = useOswald({
     Oswald_400Regular,
   });
@@ -45,6 +62,9 @@ export default function App() {
   if (!oswaldLoaded || !latoLoaded) {
     return null;
   }
+
+  // Let's now add a short hand
+  if (!isAuthenticated) return null;
 
   return (
     <>
