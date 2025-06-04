@@ -19,28 +19,18 @@ import { Navigation } from "./src/infrastructure/navigation/index";
 import { RestaurantsContextProvider } from "./src/services/restaurants/restaurants.context";
 import { LocationContextProvider } from "./src/services/location/location.context";
 import { FavouritesContextProvider } from "./src/services/favourites/favourites.context";
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDuZsXE10A0-9cy7wIYxyVg3dApf5_o258",
-  authDomain: "mealsforyou-d1a77.firebaseapp.com",
-  projectId: "mealsforyou-d1a77",
-  storageBucket: "mealsforyou-d1a77.firebasestorage.app",
-  messagingSenderId: "595776631693",
-  appId: "1:595776631693:web:d9c4c89a0cc16772a903c4",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app); // Correct way to get auth instance
+import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 
 export default function App() {
+  /*
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Then implement the useEffect
   useEffect(() => {
     setTimeout(() => {
       signInWithEmailAndPassword(auth, "valentin@shema.io", "test123")
-        .then((u) => {
+        // returns a promis and the user object here has user information from the database
+        .then((user) => {
           setIsAuthenticated(true);
         })
         .catch((e) => {
@@ -48,7 +38,7 @@ export default function App() {
         });
     }, 2000);
   }, []);
-
+*/
   const [oswaldLoaded] = useOswald({
     Oswald_400Regular,
   });
@@ -63,19 +53,18 @@ export default function App() {
     return null;
   }
 
-  // Let's now add a short hand
-  if (!isAuthenticated) return null;
-
   return (
     <>
       <ThemeProvider theme={theme}>
-        <FavouritesContextProvider>
-          <LocationContextProvider>
-            <RestaurantsContextProvider>
-              <Navigation />
-            </RestaurantsContextProvider>
-          </LocationContextProvider>
-        </FavouritesContextProvider>
+        <AuthenticationContextProvider>
+          <FavouritesContextProvider>
+            <LocationContextProvider>
+              <RestaurantsContextProvider>
+                <Navigation />
+              </RestaurantsContextProvider>
+            </LocationContextProvider>
+          </FavouritesContextProvider>
+        </AuthenticationContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />
     </>
