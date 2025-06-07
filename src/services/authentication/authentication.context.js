@@ -2,12 +2,6 @@
 
 import React, { createContext, useState } from "react";
 import { loginRequest } from "./authentication.service";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
 
 // create context
 export const AuthenticationContext = createContext();
@@ -26,7 +20,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       })
       .catch((e) => {
         setIsLoading(false);
-        setError(e);
+        setError(e.toString());
       });
   };
   return (
