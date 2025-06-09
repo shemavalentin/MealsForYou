@@ -1,7 +1,8 @@
 // authentication.context.js
 
 import React, { useEffect, createContext, useState } from "react";
-import { loginRequest, registerRequest } from "./authentication.service";
+import { loginRequest, registerRequest, auth } from "./authentication.service";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 // create context
 export const AuthenticationContext = createContext();
@@ -10,6 +11,20 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+
+  // Set the Firebase Session persistance so that the when the user is logged in and there is a reload he will stay logged in.
+
+  //  Check if user is already authenticated on mount
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      if (usr) {
+        setUser(usr);
+      }
+      setIsLoading(false);
+    });
+
+    return unsubscribe; // Clean up listener on unmount
+  }, []);
 
   const onLogin = (email, password) => {
     setIsLoading(true);
@@ -27,6 +42,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   // Setting Up the Registration
 
   const onRegister = (email, password, repeatedPassword) => {
+    setIsLoading(true);
     setError(null);
     if (password !== repeatedPassword) {
       setError("Passwords do not match");
@@ -44,20 +60,27 @@ export const AuthenticationContextProvider = ({ children }) => {
         setIsLoading(false);
       });
   };
-  /*
-  // Track auth state
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((usr) => {
-      if (usr) {
-        setUser(usr);
-      } else {
-        setUser(null);
-      }
-    });
 
-    return unsubscribe;
-  }, []);
-*/
+  // const onLogout = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       setUser(null);
+  //     })
+  //     .catch((error) => {
+  //       // optionally handle error
+  //       console.log("Logout error:", error);
+  //     });
+  // };
+
+  const onLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
+  };
+
   const isAuthenticated = !!user;
 
   return (
@@ -68,6 +91,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         isLoading,
         error,
         onLogin,
+        onLogout,
         onRegister,
       }}
     >

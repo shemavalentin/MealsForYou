@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Text } from "react-native";
+import { Text, Button } from "react-native";
 import { SafeArea } from "../../components/utility/safe-area.component";
 import { RestaurantsNavigator } from "./restaurants.navigator";
 import { MapScreen } from "../../features/map/screens/map.screen";
+import { AuthenticationContext } from "../../services/authentication/authentication.context";
 
 // Implementing the bottom navigation.
 const Tab = createBottomTabNavigator();
@@ -15,12 +16,14 @@ const TAB_ICON = {
   Settings: "settings",
 };
 
-const Settings = () => (
-  <SafeArea>
-    <Text></Text>{" "}
-  </SafeArea>
-);
-
+const Settings = () => {
+  const { onLogout } = useContext(AuthenticationContext);
+  return (
+    <SafeArea>
+      <Text>Settings</Text> <Button title="logout" onPress={() => onLogout()} />
+    </SafeArea>
+  );
+};
 const createScreenOptions = ({ route }) => {
   const iconName = TAB_ICON[route.name];
 
