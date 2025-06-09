@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { FlatList, TouchableOpacity } from "react-native";
+import { View, FlatList, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
 import { SafeArea } from "../../../components/utility/safe-area.component";
@@ -19,17 +19,6 @@ const RestaurantList = styled(FlatList).attrs({
     padding: 16,
   },
 })``;
-
-// making optimization for Activity indicator
-const Loading = styled(ActivityIndicator)`
-  margin-left: -25px;
-`;
-
-const LoadingContainer = styled.View`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-`;
 
 export const RestaurantsScreen = ({ navigation }) => {
   // using the context in the restaurant context

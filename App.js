@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "react-native-gesture-handler";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { ThemeProvider } from "styled-components/native";
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   useFonts as useOswald,
   Oswald_400Regular,
@@ -22,23 +20,6 @@ import { FavouritesContextProvider } from "./src/services/favourites/favourites.
 import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 
 export default function App() {
-  /*
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Then implement the useEffect
-  useEffect(() => {
-    setTimeout(() => {
-      signInWithEmailAndPassword(auth, "valentin@shema.io", "test123")
-        // returns a promis and the user object here has user information from the database
-        .then((user) => {
-          setIsAuthenticated(true);
-        })
-        .catch((e) => {
-          console.log("Sign-in error:", e);
-        });
-    }, 2000);
-  }, []);
-*/
   const [oswaldLoaded] = useOswald({
     Oswald_400Regular,
   });
