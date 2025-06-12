@@ -1,77 +1,74 @@
-/* 
-This component is going to be storing our favirites
-*/
-
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthenticationContext } from "../../services/authentication/authentication.context";
 
 export const FavouritesContext = createContext();
 
-// export the FavouritesContextProvider function that is going to
-// to wrap the react tree or the app.js in order for us to be able to
-// supply the favourites to the tree of react.
-
 export const FavouritesContextProvider = ({ children }) => {
+  const { user, isLoading: authLoading } = useContext(AuthenticationContext);
   const [favourites, setFavourites] = useState([]);
 
-  // Saving Favourites in the cash
-  const saveFavourites = async (value) => {
+  const saveFavourites = async (value, uid = user?.uid) => {
+    if (!uid) return;
     try {
+      const key = `@favourites-${uid}`;
       const jsonValue = JSON.stringify(value);
-      // the @favourites is the storage key here
-      await AsyncStorage.setItem("@favourites", jsonValue);
+      await AsyncStorage.setItem(key, jsonValue);
+      console.log("✅ Favourites saved for UID:", uid);
     } catch (e) {
-      console.log("Error storing", e);
+      console.log("❌ Error saving favourites:", e);
     }
   };
 
-  // Reading the Favourites from the storage
-  const loadFavourites = async () => {
+  const loadFavourites = async (uid) => {
     try {
-      const value = await AsyncStorage.getItem("@favourites");
-      if (value !== null) {
-        // value previously stored, then the JSON should perse it
-        setFavourites(JSON.parse(value));
-      }
+      const key = `@favourites-${uid}`;
+      const jsonValue = await AsyncStorage.getItem(key);
+      const loaded = jsonValue != null ? JSON.parse(jsonValue) : [];
+      setFavourites(loaded);
+      console.log("📦 Loaded favourites for UID:", uid, loaded);
     } catch (e) {
-      // error reading value
-      console.log("Error loading", e);
+      console.log("❌ Error loading favourites:", e);
     }
   };
 
-  // Each time a user decides that they want to add a favorite we need to set up something to add and remove favourite
-  const add = (restauranat) => {
-    setFavourites([...favourites, restauranat]);
+  const addToFavourites = (restaurant) => {
+    const uid = user?.uid || user?.user?.uid;
+    if (!uid) return;
+
+    const updated = [...favourites, restaurant];
+    setFavourites(updated);
+    saveFavourites(updated, uid);
   };
 
-  const remove = (restaurant) => {
-    const newFavourites = favourites.filter(
-      (x) => x.placeId !== restaurant.placeId
-    );
+  const removeFromFavourites = (restaurant) => {
+    const uid = user?.uid;
+    if (!uid) return;
 
-    setFavourites(newFavourites);
+    const updated = favourites.filter((x) => x.placeId !== restaurant.placeId);
+    setFavourites(updated);
+    saveFavourites(updated, uid);
   };
 
-  // Let's now on the very first mount of the context, make sure that we load the initial favourites.
+  // Wait for authentication to finish before reacting
   useEffect(() => {
-    loadFavourites();
-  }, []);
+    if (authLoading) return;
 
-  // Let's now listen on Favourites and whenever there is any change on favourites, we store it
-  useEffect(() => {
-    saveFavourites(favourites);
-  }, [favourites]);
+    if (user?.uid) {
+      loadFavourites(user.uid);
+    } else {
+      setFavourites([]); // clear only when sure there’s no user
+    }
+  }, [authLoading, user]);
+
   return (
     <FavouritesContext.Provider
-      // Providing our provider the value that it is going to provide externally and that value is important because it is the shape that is going to go to the outside of the component
       value={{
         favourites,
-        addToFavourites: add,
-        removeFromFavourites: remove,
+        addToFavourites,
+        removeFromFavourites,
       }}
     >
-      {/* Now inside here we are going to render our children */}
-
       {children}
     </FavouritesContext.Provider>
   );
