@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 
-import { View, FlatList, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
+import { FadeInView } from "../../../components/animations/fade.animation";
 import { SafeArea } from "../../../components/utility/safe-area.component";
 import { RestaurantInfoCard } from "../components/restaurant-info-card.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
@@ -56,6 +57,7 @@ export const RestaurantsScreen = ({ navigation }) => {
           onNavigate={navigation.navigate}
         />
       )}
+
       <RestaurantList
         // Giving the component properties(props)
         data={restaurants}
@@ -70,7 +72,9 @@ export const RestaurantsScreen = ({ navigation }) => {
                 }
               >
                 <Spacer position="bottom" size="large">
-                  <RestaurantInfoCard restaurant={item} />
+                  <FadeInView>
+                    <RestaurantInfoCard restaurant={item} />
+                  </FadeInView>
                 </Spacer>
               </TouchableOpacity>
             </>
