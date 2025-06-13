@@ -20,7 +20,7 @@ const AvatarContainer = styled.View`
 
 export const SettingsScreen = ({ navigation }) => {
   const { onLogout, user } = useContext(AuthenticationContext);
-  console.log("The loged in User is:", user);
+
   return (
     <SafeArea>
       <AvatarContainer>

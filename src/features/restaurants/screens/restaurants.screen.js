@@ -11,6 +11,7 @@ import { Search } from "../components/search.component";
 
 import { RestaurantsContext } from "../../../services/restaurants/restaurants.context";
 import { FavouritesContext } from "../../../services/favourites/favourites.context";
+import { RestaurantList } from "../components/restaurant-list.styles";
 
 import { ActivityIndicator } from "react-native-paper";
 
@@ -22,12 +23,6 @@ const LoadingContainer = styled.View`
   top: 50%;
   left: 50%;
 `;
-
-const RestaurantList = styled(FlatList).attrs({
-  contentContainerStyle: {
-    padding: 16,
-  },
-})``;
 
 export const RestaurantsScreen = ({ navigation }) => {
   // using the context in the restaurant context
