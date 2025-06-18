@@ -6,7 +6,7 @@ import { Spacer } from "../spacer/spacer.component";
 import { CompactRestaurantInfo } from "../restaurant/compact-restaurant-info.component";
 import { Text } from "../typography/text.component";
 
-// creating that component that will wrapp the the favourites
+// creating that component that will wrapp the favourites
 const FavouritesWrapper = styled.View`
   padding: 10px;
 `;

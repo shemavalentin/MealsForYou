@@ -1,17 +1,24 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+// Navigators
 import { RestaurantsNavigator } from "./restaurants.navigator";
 import { SettingsNavigator } from "./settings.navigator";
-import { MapScreen } from "../../features/map/screens/map.screen";
 
+// Screens
+import { MapScreen } from "../../features/map/screens/map.screen";
+import { RestaurantDetailScreen } from "../../features/restaurants/screens/restaurant-detail.screen";
+
+// Context Providers
 import { RestaurantsContextProvider } from "../../services/restaurants/restaurants.context";
 import { LocationContextProvider } from "../../services/location/location.context";
 import { FavouritesContextProvider } from "../../services/favourites/favourites.context";
 
-// Implementing the bottom navigation.
+// Navigators
 const Tab = createBottomTabNavigator();
+const AppStack = createStackNavigator();
 
 const TAB_ICON = {
   Restaurants: "restaurant",
@@ -26,32 +33,40 @@ const createScreenOptions = ({ route }) => {
     tabBarIcon: ({ size, color }) => (
       <Ionicons name={iconName} size={size} color={color} />
     ),
+    headerShown: false,
   };
 };
 
+// Bottom tab navigator
+const BottomTabNavigator = () => (
+  <Tab.Navigator
+    screenOptions={createScreenOptions}
+    tabBarOptions={{
+      activeTintColor: "tomato",
+      inactiveTintColor: "gray",
+    }}
+  >
+    <Tab.Screen name="Restaurants" component={RestaurantsNavigator} />
+    <Tab.Screen name="Map" component={MapScreen} />
+    <Tab.Screen name="Settings" component={SettingsNavigator} />
+  </Tab.Navigator>
+);
+
+// App root navigator with global RestaurantDetail screen
 export const AppNavigator = () => (
   <FavouritesContextProvider>
     <LocationContextProvider>
       <RestaurantsContextProvider>
-        <Tab.Navigator
-          screenOptions={createScreenOptions}
-          tabBarOptions={{
-            activeTintColor: "tomato",
-            inactiveTintColor: "gray",
-          }}
-        >
-          <Tab.Screen
-            name="Restaurants"
-            component={RestaurantsNavigator}
-            options={{ headerShown: false }}
+        <AppStack.Navigator screenOptions={{ headerShown: false }}>
+          {/* Main Tabs */}
+          <AppStack.Screen name="Main" component={BottomTabNavigator} />
+
+          {/* Global Restaurant Detail Screen */}
+          <AppStack.Screen
+            name="RestaurantDetail"
+            component={RestaurantDetailScreen}
           />
-          <Tab.Screen
-            name="Map"
-            component={MapScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen name="Settings" component={SettingsNavigator} />
-        </Tab.Navigator>
+        </AppStack.Navigator>
       </RestaurantsContextProvider>
     </LocationContextProvider>
   </FavouritesContextProvider>
