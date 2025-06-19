@@ -50,6 +50,6 @@ export const ErrorContainer = styled.View`
 
 export const AnimationWrapper = styled.View`
   position: absolute;
-  top: 0px;
+  top: -40px;
   padding: ${(props) => props.theme.space[2]};
 `;

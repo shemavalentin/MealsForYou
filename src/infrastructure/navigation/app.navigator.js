@@ -16,6 +16,8 @@ import { RestaurantsContextProvider } from "../../services/restaurants/restauran
 import { LocationContextProvider } from "../../services/location/location.context";
 import { FavouritesContextProvider } from "../../services/favourites/favourites.context";
 
+import { CameraScreen } from "../../features/settings/screens/camera.screen";
+
 // Navigators
 const Tab = createBottomTabNavigator();
 const AppStack = createStackNavigator();
@@ -66,6 +68,8 @@ export const AppNavigator = () => (
             name="RestaurantDetail"
             component={RestaurantDetailScreen}
           />
+
+          <AppStack.Screen name="CameraScreen" component={CameraScreen} />
         </AppStack.Navigator>
       </RestaurantsContextProvider>
     </LocationContextProvider>

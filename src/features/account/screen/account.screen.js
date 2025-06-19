@@ -22,7 +22,7 @@ export const AccountScreen = ({ navigation }) => {
           autoPlay
           loop
           resizeMode="cover"
-          style={{ width: 500, height: 500 }}
+          style={{ width: 400, height: 400 }}
         />
       </AnimationWrapper>
 
