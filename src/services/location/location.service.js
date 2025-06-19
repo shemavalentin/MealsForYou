@@ -1,18 +1,20 @@
+import { Platform } from "react-native";
+
 import camelize from "camelize";
-import { locations } from "./location.mock";
 
 export const locationRequest = (searchTerm) => {
-  // Let's return a promise to allow to mimc as if we are calling an API
-  return new Promise((resolve, reject) => {
-    const locationMock = locations[searchTerm];
-    if (!locationMock) {
-      reject("not found");
-    }
-    resolve(locationMock);
+  const localHost = Platform.OS === "android" ? "10.0.2.2" : "localhost";
+  // Making local fetch request. This will ensure local interaction between firebase loal function
+
+  return fetch(
+    `http://${localHost}:5001/mealsforyou-d1a77/us-central1/geocode?city=${searchTerm}`
+  ).then((res) => {
+    return res.json();
   });
 };
 
 export const locationTransform = (result) => {
+  console.log("Result from local firebase:", result);
   // We need to figure out how to get geometric location off of rsult
   // const location = result.results[0];
 
