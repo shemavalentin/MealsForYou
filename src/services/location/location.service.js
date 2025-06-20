@@ -14,7 +14,6 @@ export const locationRequest = (searchTerm) => {
 };
 
 export const locationTransform = (result) => {
-  console.log("Result from local firebase:", result);
   // We need to figure out how to get geometric location off of rsult
   // const location = result.results[0];
 

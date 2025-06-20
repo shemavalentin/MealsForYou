@@ -1,24 +1,21 @@
-import { mockImages, mocks } from "./mock";
+import { Platform } from "react-native";
+
 import camelize from "camelize";
 
 // Making a request to get restaurants
 
 export const restaurantsRequest = (location) => {
-  return new Promise((resolve, reject) => {
-    const mock = mocks[location];
-    if (!mock) {
-      reject("not found");
-    }
+  const localHost = Platform.OS === "android" ? "10.0.2.2" : "localhost";
 
-    resolve(mock);
+  return fetch(
+    `http://${localHost}:5001/mealsforyou-d1a77/us-central1/placesNearby?location=${location}`
+  ).then((res) => {
+    return res.json();
   });
 };
 
 export const restaurantsTransform = ({ results = [] }) => {
   const mappedResults = results.map((restaurant) => {
-    restaurant.photos = restaurant.photos.map((p) => {
-      return mockImages[Math.ceil(Math.random() * (mockImages.length - 1))];
-    });
     return {
       ...restaurant,
       address: restaurant.vicinity,

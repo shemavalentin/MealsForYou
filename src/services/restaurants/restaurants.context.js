@@ -30,19 +30,18 @@ export const RestaurantsContextProvider = ({ children }) => {
     setRestaurants([]);
 
     // then set timeout to wait. we are loading our local data there is no latency from outside in the API
-    setTimeout(() => {
-      restaurantsRequest(loc)
-        .then(restaurantsTransform)
-        .then((results) => {
-          // When we get restaurants, we need to set isLoading to false
-          setIsLoading(false);
-          setRestaurants(results);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          setError(err);
-        });
-    }, 2000);
+
+    restaurantsRequest(loc)
+      .then(restaurantsTransform)
+      .then((results) => {
+        // When we get restaurants, we need to set isLoading to false
+        setIsLoading(false);
+        setRestaurants(results);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err);
+      });
   };
   // Now when this component mount(RestaurantsContextProvider), we need to do something
   useEffect(
