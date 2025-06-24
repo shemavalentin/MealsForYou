@@ -1,4 +1,4 @@
-const { mocks, addMockImage } = require("./mock");
+const { mocks, addMockImage } = require("./mock/indexFuncP");
 const url = require("url");
 
 module.exports.placesRequest = (request, response) => {

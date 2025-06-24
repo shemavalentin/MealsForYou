@@ -3,17 +3,17 @@ module.exports = {
     es6: true,
     node: true,
   },
+  parser: "espree",
   parserOptions: {
-    "ecmaVersion": 2018,
+    ecmaVersion: 'latest',
+    sourceType: "module",
+    requireConfigFile: false,
   },
-  extends: [
-    "eslint:recommended",
-    "google",
-  ],
+  extends: ["eslint:recommended", "google"],
   rules: {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
-    "quotes": ["error", "double", {"allowTemplateLiterals": true}],
+    quotes: ["error", "double", { avoidEscape: true }],
   },
   overrides: [
     {
