@@ -1,45 +1,53 @@
-const functions = require("firebase-functions");
+require("dotenv").config(); // Load .env when running locall
+
+const { onRequest } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
+const { Client } = require("@googlemaps/google-maps-services-js");
+const url = require("url");
 
 const { locations: locationsMock } = require("./geocode.mock");
-const url = require("url");
-const { error } = require("console");
 
-// wrapping in Firebase HTTPS  Functions
+const GOOGLE_MAPS_API_KEY = defineSecret("GOOGLE_MAPS_API_KEY");
+const client = new Client({});
 
-exports.geocodeRequest = functions.https.onRequest(
-  (request, response, client) => {
-    const { city, mock } = url.parse(request.url, true).query;
+exports.geocodeRequest = onRequest(
+  {
+    secrets: [GOOGLE_MAPS_API_KEY],
+    timeoutSeconds: 10,
+  },
+  (req, res) => {
+    const { city, mock } = url.parse(req.url, true).query;
 
-    // validating the mock parameter
-    if (mock === "true") {
-      const locationMock = locationsMock[city.toLowerCase()];
-      return response.json(locationMock);
+    if (!city) {
+      return res.status(400).json({ error: "Missing city parameter" });
     }
 
-    // Now using client
+    if (mock === "true") {
+      const locationMock = locationsMock[city.toLowerCase()];
+      if (!locationMock) {
+        return res.status(404).json({ error: "City not found (mock)" });
+      }
+      return res.json(locationMock);
+    }
+
+    const apiKey =
+      process.env.FUNCTIONS_EMULATOR === "true"
+        ? process.env.GOOGLE_MAPS_API_KEY
+        : GOOGLE_MAPS_API_KEY.value();
+
     client
       .geocode({
         params: {
           address: city,
-          key: "",
+          key: apiKey,
         },
         timeout: 1000,
       })
-      .then((res) => {
-        return response.json(res.data);
-      })
-      .catch((e) => {
-        response.status(400);
-        return response.send(e.response.data.error_message);
-      });
-
-    if (!city) {
-      return response.status(400).json({ error: "Missing city parameter" });
-    }
-    // Let's return a promise to allow to mimc as if we are calling an API
-
-    if (!locationMock) {
-      return response.status(404).json({ error: "City not found" });
-    }
+      .then((geoRes) => res.json(geoRes.data))
+      .catch((error) =>
+        res.status(500).json({
+          error: error?.response?.data?.error_message || "Geocode failed",
+        })
+      );
   }
 );

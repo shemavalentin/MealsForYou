@@ -9,7 +9,7 @@ export const locationRequest = (searchTerm) => {
   const isDevelopment = __DEV__;
 
   const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/geocode?city=${searchTerm}`;
-  const prodUrl = `https://https://geocode-mfv7lk4rrq-uc.a.run.app?city=${searchTerm}`;
+  const prodUrl = `https://https://geocode-mfv7lk4rrq-uc.a.run.app?city=${searchTerm}&mock=true`;
 
   return fetch(isDevelopment ? localUrl : prodUrl).then((res) => {
     return res.json();
