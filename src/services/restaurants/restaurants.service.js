@@ -7,12 +7,25 @@ import camelize from "camelize";
 export const restaurantsRequest = (location) => {
   const localHost = Platform.OS === "android" ? "10.0.2.2" : "localhost";
 
+  const isDevelopment = __DEV__;
+
+  const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/placesNearby?location=${location}`;
+  const prodUrl = `https://placesnearby-mfv7lk4rrq-uc.a.run.app/?location=${location}`;
+  // const host = process.env.NODE_ENV === "development" ? localUrl : prodUrl;
+
+  // return fetch(isDevelopment ? localUrl : prodUrl).then((res) => {
+  return fetch(isDevelopment ? localUrl : prodUrl).then((res) => {
+    return res.json();
+  });
+};
+
+/*
   return fetch(
     `http://${localHost}:5001/mealsforyou-d1a77/us-central1/placesNearby?location=${location}`
   ).then((res) => {
     return res.json();
   });
-};
+};*/
 
 export const restaurantsTransform = ({ results = [] }) => {
   const mappedResults = results.map((restaurant) => {

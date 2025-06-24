@@ -44,8 +44,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",
-    "eslint": "^9.25.1",
-    "prettier": "^3.5.3"
+    "eslint": "^9.25.1"
   },
   "private": true
 }

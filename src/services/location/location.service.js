@@ -6,9 +6,12 @@ export const locationRequest = (searchTerm) => {
   const localHost = Platform.OS === "android" ? "10.0.2.2" : "localhost";
   // Making local fetch request. This will ensure local interaction between firebase loal function
 
-  return fetch(
-    `http://${localHost}:5001/mealsforyou-d1a77/us-central1/geocode?city=${searchTerm}`
-  ).then((res) => {
+  const isDevelopment = __DEV__;
+
+  const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/geocode?city=${searchTerm}`;
+  const prodUrl = `https://https://geocode-mfv7lk4rrq-uc.a.run.app?city=${searchTerm}`;
+
+  return fetch(isDevelopment ? localUrl : prodUrl).then((res) => {
     return res.json();
   });
 };
