@@ -14,6 +14,8 @@ export const LocationContextProvider = ({ children }) => {
 
   // onSearch function to Perfom search
   const onSearch = (SearchKeyword) => {
+    if (!SearchKeyword.length) return;
+
     setIsLoading(true);
 
     // Making sure we set the keyword of that search key word
@@ -22,19 +24,23 @@ export const LocationContextProvider = ({ children }) => {
 
   // Setting the context determines when it is going to fire the request.
   useEffect(() => {
+    const defaultCity = "Kigali";
+
     if (!keyword.trim().length) {
-      onSearch("toronto");
+      // If nothing was typed, use the default
+
+      setKeyword(defaultCity);
       // Don't do anything
       return;
     }
 
     // then trigger the locationRequest
-    locationRequest(keyword.toLocaleLowerCase())
+    locationRequest(keyword.toLowerCase())
       .then(locationTransform)
       .then((result) => {
         setIsLoading(false);
         setLocation(result);
-        console.log(result);
+        //console.log(result);
       })
       .catch((err) => {
         setIsLoading(false);

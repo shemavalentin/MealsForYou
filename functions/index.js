@@ -1,16 +1,37 @@
 const { onRequest } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
 const { geocodeRequest } = require("./geocode");
-const { placesRequest } = require("./places/indexjs");
+const { placesNearby } = require("./places/indexjs");
 
 const { Client } = require("@googlemaps/google-maps-services-js");
 
-// create a client when the core of firebase starts
+// Define the secret here
+const GOOGLE_MAPS_API_KEY = defineSecret("GOOGLE_MAPS_API_KEY");
+
+// Create shared client
 const client = new Client({});
 
-exports.geocode = onRequest((request, response) => {
-  geocodeRequest(request, response, client);
-});
+// Wrap geocode
+exports.geocode = onRequest(
+  {
+    secrets: [GOOGLE_MAPS_API_KEY],
+    timeoutSeconds: 10,
+  },
+  (request, response) => {
+    geocodeRequest(request, response, client, GOOGLE_MAPS_API_KEY);
+  }
+);
 
-exports.placesNearby = onRequest((request, response) => {
-  placesRequest(request, response, client);
-});
+// Wrap placesNearby
+exports.placesNearby = onRequest(
+  {
+    secrets: [GOOGLE_MAPS_API_KEY],
+    timeoutSeconds: 10,
+  },
+  (request, response) => {
+    placesNearby(request, response, client, GOOGLE_MAPS_API_KEY);
+  }
+);
+
+exports.geocode = require("./geocode").geocodeRequest;
+exports.placesNearby = require("./places/indexjs").placesNearby;

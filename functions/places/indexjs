@@ -1,13 +1,84 @@
-const { mocks, addMockImage } = require("./mock/indexFuncP");
+require("dotenv").config();
+
+const { onRequest } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
+const { Client } = require("@googlemaps/google-maps-services-js");
 const url = require("url");
 
-module.exports.placesRequest = (request, response) => {
-  const { location } = url.parse(request.url, true).query;
+const GOOGLE_MAPS_API_KEY = defineSecret("GOOGLE_MAPS_API_KEY");
+const client = new Client({});
 
-  const data = mocks[location];
+// Helper to add restaurant image
+const addGoogleImage = (apiKey) => (restaurant) => {
+  const ref = restaurant.photos?.[0]?.photo_reference;
 
-  if (data) {
-    data.results = data.results.map(addMockImage);
-  }
-  response.json(data);
+  restaurant.photos = [
+    ref
+      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${ref}&key=${apiKey}`
+      : "https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg",
+  ];
+
+  return restaurant;
 };
+
+// Cloud Function to get nearby restaurants
+exports.placesNearby = onRequest(
+  {
+    secrets: [GOOGLE_MAPS_API_KEY],
+    timeoutSeconds: 10,
+  },
+  async (req, res) => {
+    const { city, location } = url.parse(req.url, true).query;
+
+    if (!city && !location) {
+      return res
+        .status(400)
+        .json({ error: "Missing both city and location parameters" });
+    }
+
+    const apiKey =
+      process.env.FUNCTIONS_EMULATOR === "true"
+        ? process.env.GOOGLE_MAPS_API_KEY
+        : GOOGLE_MAPS_API_KEY.value();
+
+    try {
+      let latLng = location;
+
+      // If user passed city but not location
+      if (!latLng && city) {
+        const geoRes = await client.geocode({
+          params: {
+            address: city,
+            key: apiKey,
+          },
+          timeout: 1000,
+        });
+
+        const geo = geoRes.data.results?.[0]?.geometry?.location;
+        if (!geo) {
+          return res.status(404).json({ error: "City not found" });
+        }
+
+        latLng = `${geo.lat},${geo.lng}`;
+      }
+
+      // Then search nearby restaurants
+      const nearbyRes = await client.placesNearby({
+        params: {
+          location: latLng,
+          radius: 1500,
+          type: "restaurant",
+          key: apiKey,
+        },
+        timeout: 1000,
+      });
+
+      const enriched = nearbyRes.data.results.map(addGoogleImage(apiKey));
+      return res.json({ results: enriched });
+    } catch (error) {
+      return res.status(500).json({
+        error: error?.response?.data?.error_message || error.message,
+      });
+    }
+  }
+);
