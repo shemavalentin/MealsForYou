@@ -44,7 +44,7 @@ export const LocationContextProvider = ({ children }) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        setError(err);
+        setError("Sorry, Could not find that city");
       });
   }, [keyword]);
 

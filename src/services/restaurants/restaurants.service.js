@@ -19,14 +19,6 @@ export const restaurantsRequest = (location) => {
   });
 };
 
-/*
-  return fetch(
-    `http://${localHost}:5001/mealsforyou-d1a77/us-central1/placesNearby?location=${location}`
-  ).then((res) => {
-    return res.json();
-  });
-};*/
-
 export const restaurantsTransform = ({ results = [] }) => {
   const mappedResults = results.map((restaurant) => {
     return {
