@@ -168,6 +168,16 @@ const RestaurantMap = ({ navigation }) => {
     );
   }
 
+  if (!restaurants.length) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ color: "gray" }}>
+          No restaurants found in this area.
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <>
       <Search />
@@ -254,15 +264,22 @@ const RestaurantMap = ({ navigation }) => {
 };
 
 export const MapScreen = ({ navigation }) => {
-  const { location } = useContext(LocationContext);
-  if (!location) {
+  const { location, error, isLoading } = useContext(LocationContext);
+
+  if (isLoading) {
     return (
-      <Map
-        region={{
-          latitude: 0,
-          longitude: 0,
-        }}
-      />
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+  if (error || !location) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ color: "red", fontSize: 16 }}>
+          Unable to load map. Please enter a valid location.
+        </Text>
+      </View>
     );
   }
 
