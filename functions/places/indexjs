@@ -1,14 +1,12 @@
-require("dotenv").config();
-
-const { onRequest } = require("firebase-functions/v2/https");
-const { defineSecret } = require("firebase-functions/params");
 const { Client } = require("@googlemaps/google-maps-services-js");
 const url = require("url");
+const { mocks, addMockImage } = require("./mock");
 
-const GOOGLE_MAPS_API_KEY = defineSecret("GOOGLE_MAPS_API_KEY");
-const client = new Client({});
+const GOOGLE_MAPS_API_KEY = require("firebase-functions/params").defineSecret(
+  "GOOGLE_MAPS_API_KEY"
+);
 
-// Helper to add restaurant image
+// Helper for Google Images
 const addGoogleImage = (apiKey) => (restaurant) => {
   const ref = restaurant.photos?.[0]?.photo_reference;
 
@@ -21,64 +19,81 @@ const addGoogleImage = (apiKey) => (restaurant) => {
   return restaurant;
 };
 
-// Cloud Function to get nearby restaurants
-exports.placesNearby = onRequest(
-  {
-    secrets: [GOOGLE_MAPS_API_KEY],
-    timeoutSeconds: 10,
-  },
-  async (req, res) => {
-    const { city, location } = url.parse(req.url, true).query;
+exports.placesNearby = async (req, res) => {
+  const parsedUrl = url.parse(req.url, true);
+  const { city, location, mock } = parsedUrl.query;
 
-    if (!city && !location) {
+  if (!city && !location) {
+    return res
+      .status(400)
+      .json({ error: "Missing both city and location parameters" });
+  }
+
+  // MOCK MODE
+  if (mock === "true") {
+    let latLng = location;
+    if (!latLng && city) {
       return res
         .status(400)
-        .json({ error: "Missing both city and location parameters" });
+        .json({ error: "Mock mode requires location coordinates" });
     }
 
-    const apiKey =
-      process.env.FUNCTIONS_EMULATOR === "true"
-        ? process.env.GOOGLE_MAPS_API_KEY
-        : GOOGLE_MAPS_API_KEY.value();
+    const mockData = mocks[latLng];
+    if (!mockData) {
+      return res
+        .status(404)
+        .json({ error: `No mock data for location: ${latLng}` });
+    }
 
-    try {
-      let latLng = location;
+    const withImages = mockData.results.map(addMockImage);
+    return res.json({ results: withImages });
+  }
 
-      // If user passed city but not location
-      if (!latLng && city) {
-        const geoRes = await client.geocode({
-          params: {
-            address: city,
-            key: apiKey,
-          },
-          timeout: 1000,
-        });
+  // REAL MODE
+  const apiKey =
+    process.env.FUNCTIONS_EMULATOR === "true"
+      ? process.env.GOOGLE_MAPS_API_KEY
+      : GOOGLE_MAPS_API_KEY.value();
 
-        const geo = geoRes.data.results?.[0]?.geometry?.location;
-        if (!geo) {
-          return res.status(404).json({ error: "City not found" });
-        }
+  const client = new Client({});
 
-        latLng = `${geo.lat},${geo.lng}`;
-      }
+  try {
+    let latLng = location;
 
-      // Then search nearby restaurants
-      const nearbyRes = await client.placesNearby({
+    if (!latLng && city) {
+      // Geocode the city
+      const geoRes = await client.geocode({
         params: {
-          location: latLng,
-          radius: 1500,
-          type: "restaurant",
+          address: city,
           key: apiKey,
         },
         timeout: 1000,
       });
 
-      const enriched = nearbyRes.data.results.map(addGoogleImage(apiKey));
-      return res.json({ results: enriched });
-    } catch (error) {
-      return res.status(500).json({
-        error: error?.response?.data?.error_message || error.message,
-      });
+      const geo = geoRes.data.results?.[0]?.geometry?.location;
+      if (!geo) {
+        return res.status(404).json({ error: "City not found" });
+      }
+
+      latLng = `${geo.lat},${geo.lng}`;
     }
+
+    // Places Nearby Search
+    const nearbyRes = await client.placesNearby({
+      params: {
+        location: latLng,
+        radius: 1500,
+        type: "restaurant",
+        key: apiKey,
+      },
+      timeout: 1000,
+    });
+
+    const enriched = nearbyRes.data.results.map(addGoogleImage(apiKey));
+    return res.json({ results: enriched });
+  } catch (error) {
+    return res.status(500).json({
+      error: error?.response?.data?.error_message || error.message,
+    });
   }
-);
+};

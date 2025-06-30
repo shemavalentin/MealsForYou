@@ -2,6 +2,8 @@ import { Platform } from "react-native";
 
 import camelize from "camelize";
 
+import { IS_MOCK } from "@env";
+
 // Making a request to get restaurants
 
 export const restaurantsRequest = (location) => {
@@ -9,7 +11,9 @@ export const restaurantsRequest = (location) => {
 
   const isDevelopment = __DEV__;
 
-  const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/placesNearby?location=${location}`;
+  const mockParam = IS_MOCK === "true" ? "true" : "false";
+
+  const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/placesNearby?location=${location}&mock=${mockParam}`;
   const prodUrl = `https://placesnearby-mfv7lk4rrq-uc.a.run.app/?location=${location}`;
   // const host = process.env.NODE_ENV === "development" ? localUrl : prodUrl;
 

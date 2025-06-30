@@ -2,13 +2,17 @@ import { Platform } from "react-native";
 
 import camelize from "camelize";
 
+import { IS_MOCK } from "@env";
+
 export const locationRequest = (searchTerm) => {
   const localHost = Platform.OS === "android" ? "10.0.2.2" : "localhost";
   // Making local fetch request. This will ensure local interaction between firebase loal function
 
   const isDevelopment = __DEV__;
 
-  const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/geocode?city=${searchTerm}&mock=false`;
+  const mockParam = IS_MOCK === "true" ? "true" : "false";
+
+  const localUrl = `http://${localHost}:5001/mealsforyou-d1a77/us-central1/geocode?city=${searchTerm}&mock=${mockParam}`;
   const prodUrl = `https://geocode-mfv7lk4rrq-uc.a.run.app?city=${searchTerm}`;
 
   return fetch(isDevelopment ? localUrl : prodUrl).then((res) => {
