@@ -43,6 +43,7 @@
     "react-native-screens": "~4.4.0",
     "react-native-svg": "15.8.0",
     "react-native-webview": "13.12.5",
+    "stripe-client": "^1.1.5",
     "styled-components": "^6.1.17"
   },
   "devDependencies": {
@@ -51,9 +52,9 @@
     "@babel/plugin-transform-private-methods": "^7.27.1",
     "@babel/plugin-transform-private-property-in-object": "^7.27.1",
     "@react-native-community/eslint-config": "^3.2.0",
+    "babel-preset-expo": "13.2.1",
     "eslint": "^9.25.1",
-    "metro-react-native-babel-preset": "^0.77.0",
-    "babel-preset-expo": "13.2.1"
+    "metro-react-native-babel-preset": "^0.77.0"
   },
   "private": true
 }

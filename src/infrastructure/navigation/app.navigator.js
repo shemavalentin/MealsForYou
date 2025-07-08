@@ -9,6 +9,7 @@ import { SettingsNavigator } from "./settings.navigator";
 
 // Screens
 import { MapScreen } from "../../features/map/screens/map.screen";
+import { CheckoutScreen } from "../../features/checkout/screens/checkout.screen";
 import { RestaurantDetailScreen } from "../../features/restaurants/screens/restaurant-detail.screen";
 
 // Context Providers
@@ -25,6 +26,7 @@ const AppStack = createStackNavigator();
 const TAB_ICON = {
   Restaurants: "restaurant",
   Map: "map",
+  Checkout: "cart-sharp",
   Settings: "settings",
 };
 
@@ -49,6 +51,7 @@ const BottomTabNavigator = () => (
     }}
   >
     <Tab.Screen name="Restaurants" component={RestaurantsNavigator} />
+    <Tab.Screen name="Checkout" component={CheckoutScreen} />
     <Tab.Screen name="Map" component={MapScreen} />
     <Tab.Screen name="Settings" component={SettingsNavigator} />
   </Tab.Navigator>
