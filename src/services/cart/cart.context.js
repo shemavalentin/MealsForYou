@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  Children,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthenticationContext } from "../authentication/authentication.context";
 
@@ -38,8 +32,8 @@ export const CartContextProvider = ({ children }) => {
   };
 
   return (
-    <CartContextProvider.Provider
-      values={{
+    <CartContext.Provider
+      value={{
         addToCart: add,
         clearCart: clear,
         restaurant,
@@ -48,6 +42,6 @@ export const CartContextProvider = ({ children }) => {
     >
       {/* include children to render out everything subsquesntly */}
       {children}
-    </CartContextProvider.Provider>
+    </CartContext.Provider>
   );
 };

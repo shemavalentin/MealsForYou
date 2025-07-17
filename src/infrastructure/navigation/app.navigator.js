@@ -13,6 +13,7 @@ import { CheckoutScreen } from "../../features/checkout/screens/checkout.screen"
 import { RestaurantDetailScreen } from "../../features/restaurants/screens/restaurant-detail.screen";
 
 // Context Providers
+import { CartContextProvider } from "../../services/cart/cart.context";
 import { RestaurantsContextProvider } from "../../services/restaurants/restaurants.context";
 import { LocationContextProvider } from "../../services/location/location.context";
 import { FavouritesContextProvider } from "../../services/favourites/favourites.context";
@@ -62,18 +63,20 @@ export const AppNavigator = () => (
   <FavouritesContextProvider>
     <LocationContextProvider>
       <RestaurantsContextProvider>
-        <AppStack.Navigator screenOptions={{ headerShown: false }}>
-          {/* Main Tabs */}
-          <AppStack.Screen name="Main" component={BottomTabNavigator} />
+        <CartContextProvider>
+          <AppStack.Navigator screenOptions={{ headerShown: false }}>
+            {/* Main Tabs */}
+            <AppStack.Screen name="Main" component={BottomTabNavigator} />
 
-          {/* Global Restaurant Detail Screen */}
-          <AppStack.Screen
-            name="RestaurantDetail"
-            component={RestaurantDetailScreen}
-          />
+            {/* Global Restaurant Detail Screen */}
+            <AppStack.Screen
+              name="RestaurantDetail"
+              component={RestaurantDetailScreen}
+            />
 
-          <AppStack.Screen name="CameraScreen" component={CameraScreen} />
-        </AppStack.Navigator>
+            <AppStack.Screen name="CameraScreen" component={CameraScreen} />
+          </AppStack.Navigator>
+        </CartContextProvider>
       </RestaurantsContextProvider>
     </LocationContextProvider>
   </FavouritesContextProvider>
