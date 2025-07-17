@@ -19,10 +19,10 @@ export const CartContextProvider = ({ children }) => {
     if (!restaurant || restaurant.placeId !== rst.placeId) {
       setRestaurant(rst);
       setCart([item]);
+    } else {
+      // else add items to the cart
+      setCart([...cart, item]);
     }
-
-    // else add items to the cart
-    setCart([...cart, item]);
   };
 
   // Building a clear fuction to clear the cart
