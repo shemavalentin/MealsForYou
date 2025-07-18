@@ -6,7 +6,7 @@ import { LiteCreditCardInput } from "react-native-credit-card-input";
 
 import { cardTokenRequest } from "../../../services/checkout/checkout.service";
 
-export const CreditCardInput = ({ name = "Valen" }) => {
+export const CreditCardInput = ({ name }) => {
   // Declaring the onChange function that is hooked into the onChange event handler
 
   const onChange = async (formData) => {

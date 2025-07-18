@@ -10,11 +10,18 @@ import { CartContext } from "../../../services/cart/cart.context";
 
 import { CreditCardInput } from "../components/credit-card.component";
 
-import { CartIconContainer, CartIcon } from "../components/checkout.styles";
+import {
+  CartIconContainer,
+  CartIcon,
+  NameInput,
+} from "../components/checkout.styles";
 import { RestaurantInfoCard } from "../../restaurants/components/restaurant-info-card.component";
 
 export const CheckoutScreen = () => {
   const { cart, restaurant, sum } = useContext(CartContext);
+
+  // Starting to build the payment
+  const [name, setName] = useState("");
 
   if (!cart.length || !restaurant) {
     return (
@@ -42,7 +49,28 @@ export const CheckoutScreen = () => {
 
           <Text> Total: {sum / 100}</Text>
         </Spacer>
-        <CreditCardInput />
+
+        <NameInput
+          label="Name"
+          value={name}
+          onChangeText={(txt) => {
+            // if (txt.length) {
+            //   setName(txt);
+            // } else {
+            //   setName(null);
+            // }
+
+            setName(txt);
+          }}
+        />
+
+        {name.length > 0 && (
+          <CreditCardInput
+            // Now linking up the name into the credit card input
+            // To enable us when we fill in credit card inputs we get the name
+            name={name}
+          />
+        )}
       </ScrollView>
     </SafeArea>
   );
