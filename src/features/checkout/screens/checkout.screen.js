@@ -14,11 +14,13 @@ import {
   CartIconContainer,
   CartIcon,
   NameInput,
+  PayButton,
+  ClearButton,
 } from "../components/checkout.styles";
 import { RestaurantInfoCard } from "../../restaurants/components/restaurant-info-card.component";
 
 export const CheckoutScreen = () => {
-  const { cart, restaurant, sum } = useContext(CartContext);
+  const { cart, restaurant, clearCart, sum } = useContext(CartContext);
 
   // Starting to build the payment
   const [name, setName] = useState("");
@@ -64,13 +66,35 @@ export const CheckoutScreen = () => {
           }}
         />
 
-        {name.length > 0 && (
-          <CreditCardInput
-            // Now linking up the name into the credit card input
-            // To enable us when we fill in credit card inputs we get the name
-            name={name}
-          />
-        )}
+        <Spacer position="top" size="large">
+          {name.length > 0 && (
+            <CreditCardInput
+              // Now linking up the name into the credit card input
+              // To enable us when we fill in credit card inputs we get the name
+              name={name}
+            />
+          )}
+        </Spacer>
+
+        <Spacer position="top" size="xxl" />
+
+        {/* Now need to create two buttons */}
+
+        <PayButton
+          icon="cash"
+          mode="contained"
+          onPress={() => {
+            console.log("pay now");
+          }}
+        >
+          Pay Now
+        </PayButton>
+        <Spacer position="top" size="large">
+          <ClearButton icon="cart-off" mode="contained" onPress={clearCart}>
+            {" "}
+            Clear Cart
+          </ClearButton>
+        </Spacer>
       </ScrollView>
     </SafeArea>
   );
