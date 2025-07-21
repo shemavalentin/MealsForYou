@@ -3,12 +3,17 @@ require("dotenv").config(); // Load .env when running locall
 const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const { Client } = require("@googlemaps/google-maps-services-js");
+
+// const stripeClient = require("stripe")(functions.config.stripe.key);
 const url = require("url");
 
 const { locations: locationsMock } = require("./geocode.mock");
 
 const GOOGLE_MAPS_API_KEY = defineSecret("GOOGLE_MAPS_API_KEY");
-const client = new Client({});
+
+const googleClient = new Client({});
+
+// Integrating the stripe with firebase which is the back end of the syste
 
 exports.geocodeRequest = onRequest(
   {
@@ -35,7 +40,7 @@ exports.geocodeRequest = onRequest(
         ? process.env.GOOGLE_MAPS_API_KEY
         : GOOGLE_MAPS_API_KEY.value();
 
-    client
+    googleClient
       .geocode({
         params: {
           address: city,

@@ -1,4 +1,6 @@
 const { Client } = require("@googlemaps/google-maps-services-js");
+// const stripeClient = require("stripe")(functions.config.stripe.key);
+
 const url = require("url");
 const { mocks, addMockImage } = require("./mock");
 
@@ -55,14 +57,14 @@ exports.placesNearby = async (req, res) => {
       ? process.env.GOOGLE_MAPS_API_KEY
       : GOOGLE_MAPS_API_KEY.value();
 
-  const client = new Client({});
+  const googleClient = new Client({});
 
   try {
     let latLng = location;
 
     if (!latLng && city) {
       // Geocode the city
-      const geoRes = await client.geocode({
+      const geoRes = await googleClient.geocode({
         params: {
           address: city,
           key: apiKey,
@@ -79,7 +81,7 @@ exports.placesNearby = async (req, res) => {
     }
 
     // Places Nearby Search
-    const nearbyRes = await client.placesNearby({
+    const nearbyRes = await googleClient.placesNearby({
       params: {
         location: latLng,
         radius: 1500,

@@ -6,7 +6,7 @@ import { LiteCreditCardInput } from "react-native-credit-card-input";
 
 import { cardTokenRequest } from "../../../services/checkout/checkout.service";
 
-export const CreditCardInput = ({ name }) => {
+export const CreditCardInput = ({ name, onSuccess, onError }) => {
   // Declaring the onChange function that is hooked into the onChange event handler
 
   const onChange = async (formData) => {
@@ -14,8 +14,6 @@ export const CreditCardInput = ({ name }) => {
 
     const { values, status } = formData;
     const isIncomplete = Object.values(status).includes("incomplete");
-
-    console.log(isIncomplete);
 
     const expiry = values.expiry.split("/");
 
@@ -27,8 +25,14 @@ export const CreditCardInput = ({ name }) => {
       name: name,
     };
 
-    const info = await cardTokenRequest(card);
-    console.log(info);
+    if (!isIncomplete) {
+      try {
+        const info = await cardTokenRequest(card);
+        onSuccess(info);
+      } catch (e) {
+        onError();
+      }
+    }
   };
   return <LiteCreditCardInput onChange={onChange} />;
 };

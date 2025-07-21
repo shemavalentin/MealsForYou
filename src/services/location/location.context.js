@@ -24,7 +24,7 @@ export const LocationContextProvider = ({ children }) => {
 
   // Setting the context determines when it is going to fire the request.
   useEffect(() => {
-    const defaultCity = "Kigali";
+    const defaultCity = "toronto";
 
     if (!keyword.trim().length) {
       // If nothing was typed, use the default
